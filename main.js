@@ -20,7 +20,7 @@ app.use(express.json());
 //! 4.- Diseño de las rutas
 app.get("/", (req, res) => {
   console.log("Entraste a la petición");
-  res.send(alumnos);
+  res.json(alumnos);
 });
 
 //! Parametros de la ruta
@@ -32,11 +32,6 @@ app.get("/:saludo/:nombre", (req, res) => {
 app.get("/coleccion/:coleccionId/registro/:registroId", (req, res) => {
   console.log(req.params);
   res.send(`${req.params.coleccionId} ${req.params.registroId}`);
-});
-
-app.get("/:index", (req, res) => {
-  console.log(req.params);
-  res.send(alumnos[req.params.index]);
 });
 
 //! Query Strings
@@ -54,6 +49,33 @@ app.get("/body", (req, res) => {
 app.put("/", (req, res) => {
   alumnos[req.body.index] = req.body.nombre;
   res.send(alumnos);
+});
+
+//! Ejercicio #1
+/* PATH: /:NombreParametro/:NombreParametro2... */
+app.get("/mensaje/:nombre/:apellido", (req, res) => {
+  res.json({ mensaje: `Mensaje: ${req.params.nombre} ${req.params.apellido}` });
+});
+
+app.get("/mensaje", (req, res) => {
+  if (req.query.nombre) {
+    if (req.query.nombre && req.query.apellido) {
+      res.json({
+        mensaje: `Mensaje: ${req.query.nombre} ${req.query.apellido}`,
+      });
+    }
+  } else if (req.body.nombre) {
+    if (req.body.nombre && req.body.apellido) {
+      res.json({ mensaje: `Mensaje: ${req.body.nombre} ${req.body.apellido}` });
+    }
+  }
+
+  res.json({ error: `Pasa info` });
+});
+
+app.get("/:index", (req, res) => {
+  console.log(req.params);
+  res.send(alumnos[req.params.index]);
 });
 
 //! 5.- Levantar servidor
