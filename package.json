@@ -1,0 +1,23 @@
+{
+  "name": "c7-m2s17",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isc-joserodriguez/C7-M2S17.git"
+  },
+  "keywords": [],
+  "author": "Nombre",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/isc-joserodriguez/C7-M2S17/issues"
+  },
+  "homepage": "https://github.com/isc-joserodriguez/C7-M2S17#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
