@@ -1,3 +1,5 @@
+const fsPromise = require("fs").promises;
+
 /**
  * 1.- Importamos Express
  * 2.- Instanciamos una nueva aplicación
@@ -51,6 +53,14 @@ app.put("/", (req, res) => {
   res.send(alumnos);
 });
 
+app.delete("/", (req, res) => {
+  const eliminados = alumnos.splice(req.body.index, 1);
+  if (eliminados.length === 0) {
+    res.send("No se eliminó ningún elemento");
+  }
+  res.send(alumnos);
+});
+
 //! Ejercicio #1
 /* PATH: /:NombreParametro/:NombreParametro2... */
 app.get("/mensaje/:nombre/:apellido", (req, res) => {
@@ -76,6 +86,16 @@ app.get("/mensaje", (req, res) => {
 app.get("/:index", (req, res) => {
   console.log(req.params);
   res.send(alumnos[req.params.index]);
+});
+
+app.post("/archivo", async (req, res) => {
+  try {
+    await fsPromise.appendFile("./nuevoArchivo.txt", req.body.contenido);
+    res.send("Archivo creado");
+  } catch (e) {
+    res.send(e);
+    console.log(e);
+  }
 });
 
 //! 5.- Levantar servidor
