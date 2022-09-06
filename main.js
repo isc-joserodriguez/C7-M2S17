@@ -26,10 +26,10 @@ app.get("/", (req, res) => {
 });
 
 //! Parametros de la ruta
-app.get("/:saludo/:nombre", (req, res) => {
+/* app.get("/:saludo/:nombre", (req, res) => {
   console.log(req.params);
   res.send(`${req.params.saludo} ${req.params.nombre}`);
-});
+}); */
 
 app.get("/coleccion/:coleccionId/registro/:registroId", (req, res) => {
   console.log(req.params);
@@ -88,13 +88,50 @@ app.get("/:index", (req, res) => {
   res.send(alumnos[req.params.index]);
 });
 
+//! CRUD
+
+// CREATE
 app.post("/archivo", async (req, res) => {
+  const { nombre, contenido } = req.body;
   try {
-    await fsPromise.appendFile("./nuevoArchivo.txt", req.body.contenido);
-    res.send("Archivo creado");
+    await fsPromise.writeFile(`./${nombre}.txt`, contenido);
+    res.json({ message: "Archivo creado" });
   } catch (e) {
-    res.send(e);
-    console.log(e);
+    res.json({ message: e.message });
+  }
+});
+
+// Read
+app.get("/archivo/:nombre", async (req, res) => {
+  const { nombre } = req.params;
+  try {
+    const contenido = await fsPromise.readFile(`./${nombre}.txt`, "utf8");
+    res.json({ contenido });
+  } catch (e) {
+    res.json({ message: e.message });
+  }
+});
+
+// Update
+app.put("/archivo", async (req, res) => {
+  const { nombre, contenido } = req.body;
+  try {
+    await fsPromise.readFile(`./${nombre}.txt`, "utf8");
+    await fsPromise.writeFile(`./${nombre}.txt`, contenido);
+    res.json({ message: "Archivo modificado" });
+  } catch (e) {
+    res.json({ message: e.message });
+  }
+});
+
+// Delete
+app.delete("/archivo/:nombre", async (req, res) => {
+  const { nombre } = req.params;
+  try {
+    await fsPromise.unlink(`./${nombre}.txt`);
+    res.json({ message: "Archivo eliminado" });
+  } catch (e) {
+    res.json({ message: e.message });
   }
 });
 
